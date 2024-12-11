@@ -22,7 +22,7 @@ const client = new StreamerbotClient();
 
 
 // creates an HTML element containing a chat message
-const htmlWrapper = (data) => {
+const twitchWrapper = (data) => {
     let user = data.message;
     let row = document.createElement("div");
 
@@ -32,9 +32,27 @@ const htmlWrapper = (data) => {
 
     row.innerHTML = `<div>
         <div class="message__container">
-            <div class="message__sender" style="border-color: ${data.user.color};">${user.username}</div>
+            <div class="message__sender" style="border-color: ${data.user.color};">Twitch: ${user.username}</div>
             <div class="message__body">
                 <p class="message__content">${user.message}</p>
+            </div>
+        </div>
+    </div>`
+    return row;
+}
+
+const youtubeWrapper = (data) => {
+    let row = document.createElement("div");
+
+    row.dataset.userId = data.user.id;
+    row.dataset.messageId = data.eventId;
+    row.className = "row";
+
+    row.innerHTML = `<div>
+        <div class="message__container">
+            <div class="message__sender">Youtube: ${data.user.name}</div>
+            <div class="message__body">
+                <p class="message__content">${data.message}</p>
             </div>
         </div>
     </div>`
@@ -56,7 +74,15 @@ client.on('Twitch.ChatMessage', (obj) => {
     const data = obj.data;
     const event = obj.event;
 
-    appendMessage(htmlWrapper(data));
+    appendMessage(twitchWrapper(data));
+    console.log(obj);
+});
+
+client.on('YouTube.Message', (obj) => {
+    const data = obj.data;
+    const event = obj.event;
+
+    appendMessage(youtubeWrapper(data));
     console.log(obj);
 })
 

@@ -19,29 +19,7 @@ const client = new StreamerbotClient();
 // event subscription event handler method
 // client.on();
 
-// element for styling and testing
-const testHtml = () => {
-    let row = document.createElement("div");
 
-    let username = "todd";
-    let message = "Hello world";
-
-    row.dataset.userId = '241438845';
-    row.dataset.messageId = '1ac1c650-0d02-488c-b3a6-3783bcef0b8d';
-    row.className = "row";
-
-    row.innerHTML = `<div>
-        <div class="message__container">
-            <div class="message__sender">${username}</div>
-            <div class="message__body">
-                <p class="message__content">${message}</p>
-            </div>
-        </div>
-    </div>`
-    display.append(row);
-}
-
-testHtml();
 
 // creates an HTML element containing a chat message
 const htmlWrapper = (data) => {
@@ -54,7 +32,7 @@ const htmlWrapper = (data) => {
 
     row.innerHTML = `<div>
         <div class="message__container">
-            <div class="message__sender">${user.username}</div>
+            <div class="message__sender" style="border-color: ${data.user.color};">${user.username}</div>
             <div class="message__body">
                 <p class="message__content">${user.message}</p>
             </div>
@@ -64,7 +42,13 @@ const htmlWrapper = (data) => {
 }
 
 const appendMessage = (htmlElement) => {
+    display.prepend(htmlElement);
+    globalMsgCount++;
 
+    if (globalMsgCount >= 5) {
+        display.removeChild(display.lastChild);
+        globalMsgCount--;
+    }
 }
 
 // event handler for twitch chat messages
@@ -72,6 +56,31 @@ client.on('Twitch.ChatMessage', (obj) => {
     const data = obj.data;
     const event = obj.event;
 
-    display.prepend(htmlWrapper(data));
+    appendMessage(htmlWrapper(data));
     console.log(obj);
 })
+
+// element for styling and testing
+const testHtml = () => {
+    let row = document.createElement("div");
+
+    let username = "Todd";
+    let message = "Hello world";
+    let color = "red"
+
+    row.dataset.userId = '241438845';
+    row.dataset.messageId = '1ac1c650-0d02-488c-b3a6-3783bcef0b8d';
+    row.className = "row";
+
+    row.innerHTML = `<div>
+        <div class="message__container">
+            <div class="message__sender" style="border-color: ${color};">${username}</div>
+            <div class="message__body">
+                <p class="message__content">${message}</p>
+            </div>
+        </div>
+    </div>`
+    appendMessage(row);
+}
+
+testHtml();

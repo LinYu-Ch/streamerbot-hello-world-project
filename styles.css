@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+p {
+    margin: 0;
+}
+
+#displayWindow {
+    font-family: "Fredoka", serif;;
+    font-size: 1rem;
+}
+
+.row {
+    margin-bottom: 0.8rem;
+}
+
+.message__container {
+    /* border: 1px solid red; */
+    width: fit-content;
+    max-width: 16rem;
+}
+
+.message__sender {
+    text-transform: capitalize;
+    width: fit-content;
+    border-radius: 50rem;
+    border: 2px solid;
+    padding: 0px 10px;
+}
+
+.message__body {
+    border-radius: 1rem;
+    border: 2px solid black;
+    margin-top: 0.2rem;
+    padding: 0px 10px;
+    width: fit-content;
+}
